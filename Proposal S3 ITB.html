@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal S3 - Dynamic Security Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Teal Accent -->
+    <!-- Application Structure Plan: The application is structured as a narrative journey. It starts with a hero section, followed by an updated 'Researcher Profile' section with photo, supervisors, motivation, a new publication infographic, and full publication list. The user then scrolls through thematic sections: 1. The Big Picture (Problem), 2. The Research Gap, 3. State of the Art, 4. The Proposed Solution (with updated architecture diagram), 5. The Methodology (with enhanced 5-step flowchart including real-world validation), 6. The Impact (Contributions), and 7. References. This structure builds a stronger, self-contained argument. Key interactions are focused on charts and diagram tooltips. -->
+    <!-- Visualization & Content Choices: 1. Researcher Profile: Goal: Introduce the researcher. Viz: Two-column layout with photo, text, supervisors, motivation, a new publication bar chart, and a comprehensive, categorized list of publication cards. Interaction: None. Justification: Provides strong credibility upfront. 2. Renewable Energy Target (RUPTL): Goal: Inform. Viz: Bar chart (Chart.js). Interaction: Hover. Justification: Visual impact. 3. AI Regenerative Mechanism: Goal: Explain concept. Viz: Updated interactive HTML/CSS flowchart based on user-provided image with restored tooltips. Interaction: Hover for tooltips. Justification: Visually clarifies the architecture. 4. Research Gap: Goal: Justify novelty. Viz: 3-column text layout. Justification: Clear comparison. 5. State of the Art: Goal: Position the research. Viz: Bubble Chart (Chart.js). Interaction: Hover on bubbles for details. Justification: Visually compares methods on three axes. 6. Research Methodology: Goal: Show plan. Viz: Enhanced 5-step HTML/CSS flowchart. Justification: Clear, detailed, step-by-step visual representation. 7. References: Goal: Provide sources. Viz: List in cards. Justification: Consistency. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #4A4A4A;
+        }
+        .section-title {
+            color: #005A5B;
+        }
+        .highlight-text {
+            color: #007A7C;
+            font-weight: 700;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+            color: #4A4A4A;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #007A7C;
+        }
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 6px;
+            z-index: 10;
+            width: 250px;
+            text-align: left;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+        }
+        .interactive-diagram-item:hover .tooltip {
+            display: block;
+        }
+        .flow-arrow {
+            color: #007A7C;
+            font-weight: bold;
+        }
+        .publication-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-lg font-bold text-gray-800">Proposal S3</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#profile" class="nav-link">Profil</a>
+                <a href="#problem" class="nav-link">Masalah</a>
+                <a href="#gap" class="nav-link">Kesenjangan</a>
+                <a href="#sota" class="nav-link">State of the Art</a>
+                <a href="#solution" class="nav-link">Solusi</a>
+                <a href="#methodology" class="nav-link">Metodologi</a>
+                <a href="#contribution" class="nav-link">Kontribusi</a>
+                <a href="#references" class="nav-link">Referensi</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="min-h-[60vh] flex items-center bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold section-title leading-tight">Dynamic Security Assessment Melalui Mekanisme Regeneratif AI</h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600">Sebuah Pendekatan Baru untuk Menjamin Keandalan Jaringan Listrik Indonesia Menuju Target NZE 2060</p>
+                <p class="mt-2 font-bold text-gray-800">Ardylla Rommyonegge</p>
+                <p class="text-gray-500">Proposal Penelitian Doktor - Institut Teknologi Bandung</p>
+            </div>
+        </section>
+
+        <section id="profile" class="py-20 px-4 bg-teal-50/50">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Profil Peneliti</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 items-start">
+                    <div class="md:col-span-1 card p-8 text-center">
+                        <img src="https://iili.io/FeJBByv.jpg" alt="Foto Profil Ardylla Rommyonegge" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                        <h3 class="text-2xl font-bold text-gray-800">Ardylla Rommyonegge</h3>
+                        <p class="text-gray-600 mt-2">Manajer Unit Pelaksana Transmisi Salatiga, PT PLN (Persero)</p>
+                        <p class="text-sm mt-4 text-gray-500">Praktisi dengan pengalaman 15 tahun di bidang Power System Engineering. Lulusan S2 Teknik Elektro ITB (Cum Laude) dengan minat riset pada analisis sistem tenaga, energi terbarukan, dan keekonomian tenaga listrik.</p>
+                        <div class="mt-6 pt-6 border-t border-gray-200 text-left">
+                            <h4 class="font-semibold text-gray-700">Promotor:</h4>
+                            <p class="text-sm text-gray-600">Prof. Umar Khayam</p>
+                            <h4 class="font-semibold text-gray-700 mt-2">Supervisor:</h4>
+                            <p class="text-sm text-gray-600">Dr. Ir. Nanang Hariyanto, M.T.</p>
+                        </div>
+                         <div class="mt-6 pt-6 border-t border-gray-200 text-left">
+                            <h4 class="font-semibold text-gray-700">Motivasi Studi Lanjut S3:</h4>
+                            <p class="text-sm text-gray-600 mt-2">Pengalaman praktis di PLN memberikan kesadaran mendalam akan urgensi menjaga stabilitas jaringan di tengah transisi energi. Riset S2 dan publikasi yang berfokus pada kerentanan jaringan dan mitigasi risiko menjadi fondasi akademik. Studi S3 adalah langkah logis untuk mensintesiskan keduanya: mengembangkan solusi inovatif berbasis AI yang tidak hanya relevan secara teoretis, tetapi juga dapat diimplementasikan untuk menjawab tantangan nyata yang dihadapi PLN dan ketenagalistrikan nasional.</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Produktivitas Publikasi</h3>
+                        <div class="card p-6 mb-8">
+                            <div class="chart-container" style="height: 250px; max-width: 600px; margin: auto;">
+                                <canvas id="publicationChart"></canvas>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Daftar Publikasi</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xl font-semibold text-gray-700 mb-3">Jurnal</h4>
+                                <div class="space-y-4">
+                                    <div class="card p-5">
+                                        <div class="flex justify-between items-start gap-4">
+                                            <div>
+                                                <p class="font-semibold">Optimal Security Strategies for the Batam-Bintan Power Grid Considering Renewable Energy Integration: A Game-Theoretic Approach</p>
+                                                <p class="text-sm text-gray-500 italic mt-1">MDPI Journal Energies, 2025 (Progress to Submission)</p>
+                                            </div>
+                                            <span class="publication-tag bg-gray-100 text-gray-800">In Progress</span>
+                                        </div>
+                                    </div>
+                                    <div class="card p-5">
+                                        <div class="flex justify-between items-start gap-4">
+                                            <div>
+                                                <p class="font-semibold">Optimization of Renewable Energy Allocation to Reduce Network Vulnerability Risk Under Intentional Transmission Attacks</p>
+                                                <p class="text-sm text-gray-500 italic mt-1">IEEE Access, Vol. 12, Jan 2024</p>
+                                            </div>
+                                            <span class="publication-tag bg-green-100 text-green-800">Jurnal Q1</span>
+                                        </div>
+                                    </div>
+                                    <div class="card p-5">
+                                        <div class="flex justify-between items-start gap-4">
+                                            <div>
+                                                <p class="font-semibold">Network Vulnerability Risk Assessment of Power Grid and Its Mitigation</p>
+                                                <p class="text-sm text-gray-500 italic mt-1">International Journal on Electrical Engineering & Informatics, Vol. 15, Sep 2023</p>
+                                            </div>
+                                            <span class="publication-tag bg-yellow-100 text-yellow-800">Jurnal Q3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-semibold text-gray-700 mb-3">Prosiding Konferensi</h4>
+                                <div class="space-y-4">
+                                     <div class="card p-5"><p class="font-semibold">Strategic Defense Planning for the Batam-Bintan Power Grid Against Intentional Attacks: Integrating Renewable Energy Solutions</p><p class="text-sm text-gray-500 italic mt-1">ICHVEPS 2025 (Abstract Accepted)</p></div>
+                                     <div class="card p-5"><p class="font-semibold">The Assessment of Batam-Bintan Power Grid Vulnerability Risk Regarding Intentional Transmission Attacks</p><p class="text-sm text-gray-500 italic mt-1">ICT-PEP 2024 (Presented)</p></div>
+                                     <div class="card p-5"><p class="font-semibold">Vulnerability Risk Mitigation Against Intentional Attacks for Non-Wire Transmission Expansion Planning Based on Game Theory</p><p class="text-sm text-gray-500 italic mt-1">ICHVEPS 2023 (Presented)</p></div>
+                                     <div class="card p-5"><p class="font-semibold">Defending Power Grid Considering Vulnerability Risk by Optimal Renewable Energy Assignment Game Theory Approach</p><p class="text-sm text-gray-500 italic mt-1">ICSREE 2023 (Presented)</p></div>
+                                     <div class="card p-5"><p class="font-semibold">Network Vulnerability of Power Grid Under Intentional Transmission Attacks</p><p class="text-sm text-gray-500 italic mt-1">ICPERE 2022 (Presented)</p></div>
+                                     <div class="card p-5"><p class="font-semibold">Deferral of Traditional Investment Using Real Option Analysis Considering Distributed Generation Penetration</p><p class="text-sm text-gray-500 italic mt-1">ICT-PEP 2020 (Presented)</p></div>
+                                     <div class="card p-5"><p class="font-semibold">Generation Planning and Optimization to Escalate Electrification: A Case Study of Nias Island System</p><p class="text-sm text-gray-500 italic mt-1">IMCEST 2020 (Presented)</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="problem" class="py-20 px-4">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Gambaran Besar: Paradoks Transisi Energi</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Indonesia berkomitmen mencapai Net Zero Emission 2060, yang menuntut transisi masif ke Energi Baru Terbarukan (EBT). Namun, di balik tujuan mulia ini, tersembunyi tantangan besar bagi stabilitas jaringan listrik kita.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="card p-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Target Agresif, Risiko Tersembunyi</h3>
+                        <p class="mb-4">Rencana Usaha Penyediaan Tenaga Listrik (RUPTL) menargetkan porsi EBT sebesar <span class="highlight-text text-3xl">51.6%</span> pada tahun 2030. Mayoritas berasal dari sumber *Variable Renewable Energy* (VRE) seperti surya dan angin.</p>
+                        <p class="text-sm text-gray-500">Peningkatan VRE yang masif ini secara fundamental mengubah cara kerja sistem tenaga listrik yang telah kita kenal selama puluhan tahun.</p>
+                        <div class="mt-6 chart-container mx-auto" style="height: 250px; max-width: 400px;">
+                            <canvas id="vreChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="card p-6"><h4 class="font-bold text-xl mb-2">⚡ Fluktuasi Daya Cepat</h4><p>Sifat VRE yang intermiten dan tidak dapat diprediksi menyebabkan pasokan daya naik-turun secara drastis, menyulitkan penyeimbangan beban dan pasokan.</p></div>
+                        <div class="card p-6"><h4 class="font-bold text-xl mb-2">📉 Penurunan Inersia Sistem</h4><p>Hilangnya pembangkit konvensional (turbin besar yang berputar) mengurangi "peredam kejut" alami sistem, membuatnya lebih rentan terhadap gangguan frekuensi.</p></div>
+                        <div class="card p-6"><h4 class="font-bold text-xl mb-2">❓ Kompleksitas Operasi</h4><p>Operator sistem dihadapkan pada ribuan skenario baru yang sulit diprediksi, meningkatkan risiko pengambilan keputusan yang salah saat terjadi gangguan.</p></div>
+                    </div>
+                </div>
+                <div class="mt-16 text-center">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Dampak Nyata pada Jaringan</h3>
+                    <p class="max-w-4xl mx-auto text-gray-600">Ketika gangguan seperti <span class="font-semibold">hubung singkat pada transmisi utama</span> atau <span class="font-semibold">lepasnya sebuah pembangkit besar</span> terjadi pada sistem dengan penetrasi VRE 50%, dampaknya bisa beruntun. Penurunan inersia menyebabkan frekuensi jatuh lebih cepat dan dalam. Fluktuasi daya dari VRE memperburuk osilasi, sementara tegangan di titik-titik lemah bisa anjlok, memicu pelepasan beban dan berpotensi menyebabkan pemadaman meluas (*cascading failure*).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gap" class="py-20 px-4 bg-white">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Kesenjangan Penelitian: Mengapa Perlu Terobosan?</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Metode yang ada saat ini tidak cukup untuk mengatasi tantangan keamanan dinamis di era VRE. Ada kesenjangan yang jelas antara apa yang bisa dilakukan sekarang dan apa yang dibutuhkan di masa depan.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-3">Metode Konvensional</h3>
+                        <p class="text-gray-600">Metode berbasis simulasi domain-waktu sangat akurat, namun membutuhkan waktu komputasi yang sangat lama.</p>
+                        <p class="mt-4 font-bold text-red-600">Kesenjangan: Terlalu lambat untuk aplikasi kontrol dan pengambilan keputusan secara *real-time*.</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-3">AI Klasifikasi (Pasif)</h3>
+                        <p class="text-gray-600">Metode ini lebih cepat dan dapat memprediksi apakah suatu kondisi 'stabil' atau 'tidak stabil'.</p>
+                        <p class="mt-4 font-bold text-red-600">Kesenjangan: Bersifat reaktif. Hanya memberikan peringatan, tanpa menawarkan solusi atau tindakan korektif untuk mencegah instabilitas.</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-3">Solusi yang Diusulkan</h3>
+                        <p class="text-gray-600">Mekanisme Regeneratif AI tidak hanya menilai, tetapi juga secara proaktif menghasilkan tindakan kontrol yang optimal.</p>
+                        <p class="mt-4 font-bold text-green-600">Jembatan: Menutup kesenjangan dengan menyediakan asesmen cepat DAN solusi kontrol preventif secara simultan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sota" class="py-20 px-4 bg-gray-50">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Posisi Penelitian (State of the Art)</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Grafik ini memetakan berbagai pendekatan DSA. Ukuran gelembung merepresentasikan volume penelitian di area tersebut. Penelitian ini diposisikan secara unik dengan mengkombinasikan kecepatan komputasi tinggi dengan kemampuan aksi proaktif, sebuah area yang belum terisi oleh metode-metode sebelumnya.</p>
+                </div>
+                <div class="card p-8 max-w-4xl mx-auto">
+                    <div class="chart-container" style="height: 450px; max-width: 700px; margin: auto;">
+                        <canvas id="sotaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-20 px-4 bg-white">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Solusi yang Diusulkan: Mekanisme Regeneratif AI</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Penelitian ini memperkenalkan sebuah konsep baru yang melampaui metode pasif. Bukan hanya mendeteksi masalah, tetapi secara aktif **menciptakan (meregenerasi)** solusi kontrol optimal secara mandiri dan *real-time*.</p>
+                </div>
+                <div class="max-w-5xl mx-auto p-8 card">
+                    <h3 class="text-2xl font-bold text-center mb-8">Arsitektur Mekanisme AI yang Diusulkan</h3>
+                    <div class="flex flex-col items-center gap-2 text-center">
+                        <div class="card p-3 border border-gray-300 w-full md:w-3/4">
+                            <p class="font-semibold">Sistem Tenaga Listrik</p>
+                            <p class="text-sm text-gray-500">Input: Data Topologi & Status Grid (Tegangan, Sudut Fasa, Aliran Daya)</p>
+                        </div>
+                        <div class="text-4xl flow-arrow">&darr;</div>
+                        <div class="card p-6 w-full border-2 border-teal-500">
+                            <h4 class="text-xl font-bold text-center mb-4">Otak AI Hibrida</h4>
+                            <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-left">
+                                <div class="interactive-diagram-item relative card p-3 border border-teal-400 bg-teal-50 flex-1">
+                                    <p class="font-semibold">1. Modul Asesmen (GNN)</p>
+                                    <p class="text-sm">Menganalisis kondisi jaringan &rarr; Menghasilkan Indeks Keamanan.</p>
+                                    <div class="tooltip"><strong>Graph Neural Network (GNN):</strong> Efisien menangkap hubungan kompleks antar komponen dalam jaringan listrik, memungkinkannya melakukan asesmen stabilitas jauh lebih cepat daripada simulasi konvensional.</div>
+                                </div>
+                                <div class="interactive-diagram-item relative card p-3 border border-blue-400 bg-blue-50 flex-1">
+                                    <p class="font-semibold">2. Modul Regeneratif (DRL)</p>
+                                    <p class="text-sm">Menerima status & indeks, lalu memutuskan Aksi Kontrol Optimal.</p>
+                                    <div class="tooltip"><strong>Deep Reinforcement Learning (DRL):</strong> Agen AI yang belajar melalui trial-and-error dalam lingkungan simulasi untuk menemukan kebijakan kontrol terbaik.</div>
+                                </div>
+                                <div class="interactive-diagram-item relative card p-3 border border-purple-400 bg-purple-50 flex-1">
+                                    <p class="font-semibold">3. Modul Pelatihan (GAN)</p>
+                                    <p class="text-sm">Menciptakan skenario gangguan sulit untuk melatih DRL agar lebih tangguh.</p>
+                                    <div class="tooltip"><strong>Generative Adversarial Network (GAN):</strong> Menciptakan skenario gangguan yang realistis dan menantang untuk melatih agen DRL menjadi lebih tangguh.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-4xl flow-arrow">&darr;</div>
+                        <div class="card p-3 border border-gray-300 w-full md:w-3/4">
+                            <p class="font-semibold">Sistem Tenaga Listrik</p>
+                            <p class="text-sm text-gray-500">Output: Aksi Kontrol Optimal diterapkan ke sistem. Contohnya: mengurangi sementara output daya PLTS sebesar 15%, menginjeksikan daya reaktif dari BESS, atau menyesuaikan setpoint tegangan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="methodology" class="py-20 px-4 bg-teal-50/50">
+            <div class="container mx-auto">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold section-title">Bagaimana Penelitian Ini Dilakukan?</h2><p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Penelitian ini akan dilaksanakan dalam lima tahap utama yang saling berkesinambungan.</p></div>
+                <div class="flex flex-col md:flex-row items-stretch justify-center gap-y-4 md:gap-y-0 text-center">
+                    <div class="flex-1 card p-4 mx-1 flex flex-col">
+                        <div class="flex-grow">
+                            <p class="text-lg font-bold highlight-text">Tahap 1</p>
+                            <p class="text-xs text-gray-500 font-semibold">Semester 1-2</p>
+                            <h3 class="text-md font-bold my-2">Pemodelan Sistem</h3>
+                            <p class="text-sm">Studi literatur dan membangun model sistem tenaga (modifikasi IEEE 39-bus) dengan penetrasi VRE tinggi.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-gray-200">
+                            <p class="text-xs font-bold text-gray-700">Software:</p>
+                            <p class="text-xs text-gray-600">DIgSILENT, Python</p>
+                        </div>
+                    </div>
+                    <div class="text-2xl flow-arrow px-1 flex items-center justify-center rotate-90 md:rotate-0">&rarr;</div>
+                    <div class="flex-1 card p-4 mx-1 flex flex-col">
+                        <div class="flex-grow">
+                            <p class="text-lg font-bold highlight-text">Tahap 2</p>
+                            <p class="text-xs text-gray-500 font-semibold">Semester 3</p>
+                            <h3 class="text-md font-bold my-2">Pengembangan AI</h3>
+                            <p class="text-sm">Merancang dan implementasi arsitektur GNN, DRL, dan GAN.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-gray-200">
+                            <p class="text-xs font-bold text-gray-700">Software:</p>
+                            <p class="text-xs text-gray-600">TensorFlow/PyTorch</p>
+                        </div>
+                    </div>
+                    <div class="text-2xl flow-arrow px-1 flex items-center justify-center rotate-90 md:rotate-0">&rarr;</div>
+                    <div class="flex-1 card p-4 mx-1 flex flex-col">
+                        <div class="flex-grow">
+                            <p class="text-lg font-bold highlight-text">Tahap 3</p>
+                            <p class="text-xs text-gray-500 font-semibold">Semester 4</p>
+                            <h3 class="text-md font-bold my-2">Pelatihan & Validasi (Simulasi)</h3>
+                            <p class="text-sm">Melatih dan menguji performa mekanisme AI terhadap metode lain di lingkungan simulasi.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-gray-200">
+                            <p class="text-xs font-bold text-gray-700">Software:</p>
+                            <p class="text-xs text-gray-600">Python, HPC Cluster</p>
+                        </div>
+                    </div>
+                    <div class="text-2xl flow-arrow px-1 flex items-center justify-center rotate-90 md:rotate-0">&rarr;</div>
+                    <div class="flex-1 card p-4 mx-1 flex flex-col bg-teal-50 border-2 border-teal-200">
+                        <div class="flex-grow">
+                            <p class="text-lg font-bold highlight-text">Tahap 4</p>
+                            <p class="text-xs text-gray-500 font-semibold">Semester 5</p>
+                            <h3 class="text-md font-bold my-2">Uji Coba Dunia Nyata</h3>
+                            <p class="text-sm">Menguji performa AI menggunakan data historis (SCADA/WAMS) dari sistem tenaga listrik nyata (misal: sub-sistem Jawa-Bali).</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-gray-200">
+                            <p class="text-xs font-bold text-gray-700">Tools:</p>
+                            <p class="text-xs text-gray-600">Data Historis PLN, Lingkungan Simulasi Terkalibrasi</p>
+                        </div>
+                    </div>
+                    <div class="text-2xl flow-arrow px-1 flex items-center justify-center rotate-90 md:rotate-0">&rarr;</div>
+                    <div class="flex-1 card p-4 mx-1 flex flex-col">
+                        <div class="flex-grow">
+                            <p class="text-lg font-bold highlight-text">Tahap 5</p>
+                            <p class="text-xs text-gray-500 font-semibold">Semester 5-6</p>
+                            <h3 class="text-md font-bold my-2">Analisis & Disertasi</h3>
+                            <p class="text-sm">Analisis hasil, penulisan publikasi, dan penyusunan naskah disertasi.</p>
+                        </div>
+                         <div class="mt-4 pt-2 border-t border-gray-200">
+                            <p class="text-xs font-bold text-gray-700">Software:</p>
+                            <p class="text-xs text-gray-600">LaTeX, Zotero</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contribution" class="py-20 px-4 bg-white">
+            <div class="container mx-auto">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold section-title">Kontribusi Penelitian</h2><p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Penelitian ini diharapkan memberikan dampak signifikan baik bagi dunia akademik maupun bagi kemajuan praktis di sektor energi Indonesia.</p></div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card p-8"><h3 class="text-2xl font-bold mb-4">Kontribusi Akademik</h3><ul class="space-y-4 list-disc list-inside"><li>Memperkenalkan **konsep orisinal "mekanisme regeneratif"** dalam bidang Stabilitas Sistem Tenaga dan AI Terapan.</li><li>Mengembangkan **arsitektur AI hibrida baru** yang dapat menjadi referensi untuk aplikasi kontrol *real-time* lainnya.</li></ul></div>
+                    <div class="card p-8"><h3 class="text-2xl font-bold mb-4">Kontribusi Praktis</h3><ul class="space-y-4 list-disc list-inside"><li>Menyediakan **alat bantu pengambilan keputusan (DSS)** canggih untuk operator sistem seperti PLN.</li><li>Meningkatkan **keandalan dan keamanan pasokan listrik nasional**, yang krusial bagi pertumbuhan ekonomi.</li><li>**Mempercepat adopsi EBT** dengan menyediakan solusi teknis untuk tantangan stabilitas, mendukung pencapaian target NZE 2060.</li></ul></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="references" class="py-20 px-4 bg-gray-100">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Referensi Utama</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Penelitian ini dibangun di atas fondasi karya-karya fundamental dan terkini di bidang sistem tenaga dan kecerdasan buatan.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-4">
+                    <div class="card p-4">
+                        <p class="text-gray-800">[1] P. Kundur, <span class="font-semibold italic">Power System Stability and Control</span>. McGraw-Hill, 1994.</p>
+                    </div>
+                    <div class="card p-4">
+                        <p class="text-gray-800">[2] S. You, Y. Liu, C. Liu, and J. M. F. de Sousa, "Online Dynamic Security Assessment Using Extreme Learning Machine," <span class="font-semibold italic">IEEE Transactions on Smart Grid</span>, vol. 8, no. 6, pp. 3120-3129, Nov. 2017.</p>
+                    </div>
+                    <div class="card p-4">
+                        <p class="text-gray-800">[3] L. Zhang, Y. He, J. Chen, and Y. Lin, "Deep Reinforcement Learning for Coordinated Voltage Control in Power Grids," <span class="font-semibold italic">IEEE Transactions on Smart Grid</span>, vol. 12, no. 1, pp. 696-707, Jan. 2021.</p>
+                    </div>
+                     <div class="card p-4">
+                        <p class="text-gray-800">[4] F. Milano et al., "Foundations and Challenges of Low-Inertia Systems," in <span class="font-semibold italic">2018 Power Systems Computation Conference (PSCC)</span>, 2018, pp. 1-25.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center"><p>&copy; 2025 Ardylla Rommyonegge. Proposal Penelitian S3 Interaktif.</p><p>Institut Teknologi Bandung</p></div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const vreChartCtx = document.getElementById('vreChart').getContext('2d');
+            new Chart(vreChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Kondisi Saat Ini', 'Target RUPTL 2030'],
+                    datasets: [{
+                        label: 'Porsi VRE (%)',
+                        data: [15, 51.6],
+                        backgroundColor: ['rgba(0, 122, 124, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                        borderColor: ['rgba(0, 122, 124, 1)', 'rgba(255, 99, 132, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, max: 60, title: { display: true, text: 'Persentase (%)' } } },
+                    plugins: { legend: { display: false }, title: { display: true, text: 'Peningkatan Target Porsi VRE', font: { size: 14 } } }
+                }
+            });
+
+            const sotaChartCtx = document.getElementById('sotaChart').getContext('2d');
+            const sotaData = [
+                {
+                    label: 'Metode Konvensional',
+                    x: 2, y: 2, r: 30,
+                    publications: '10,000+',
+                    color: 'rgba(255, 99, 132, 0.7)'
+                },
+                {
+                    label: 'AI Klasifikasi (Pasif)',
+                    x: 8, y: 3, r: 25,
+                    publications: '~5,000',
+                    color: 'rgba(54, 162, 235, 0.7)'
+                },
+                {
+                    label: 'RL Kontrol Lokal',
+                    x: 7, y: 6, r: 15,
+                    publications: '~1,500',
+                    color: 'rgba(255, 206, 86, 0.7)'
+                },
+                {
+                    label: 'Mekanisme Regeneratif (Usulan)',
+                    x: 9, y: 9, r: 10,
+                    publications: 'Novel',
+                    color: 'rgba(75, 192, 192, 0.7)'
+                }
+            ];
+
+            new Chart(sotaChartCtx, {
+                type: 'bubble',
+                data: {
+                    datasets: sotaData.map(item => ({
+                        label: item.label,
+                        data: [{x: item.x, y: item.y, r: item.r}],
+                        backgroundColor: item.color,
+                        borderColor: item.color.replace('0.7', '1'),
+                        customData: {
+                            publications: item.publications
+                        }
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const pubs = context.dataset.customData.publications;
+                                    label += `~${pubs} publikasi`;
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '← Waktu Komputasi (Lama ke Cepat) →',
+                                font: { size: 14 }
+                            },
+                            min: 0,
+                            max: 10,
+                            ticks: { display: false }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '← Kemampuan Aksi (Pasif ke Proaktif) →',
+                                font: { size: 14 }
+                            },
+                             min: 0,
+                             max: 10,
+                             ticks: { display: false }
+                        }
+                    }
+                }
+            });
+
+            const publicationChartCtx = document.getElementById('publicationChart').getContext('2d');
+            new Chart(publicationChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['2020', '2022', '2023', '2024', '2025'],
+                    datasets: [
+                        {
+                            label: 'Jurnal',
+                            data: [0, 0, 1, 1, 1],
+                            backgroundColor: 'rgba(0, 122, 124, 0.7)',
+                        },
+                        {
+                            label: 'Prosiding',
+                            data: [2, 1, 2, 1, 1],
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Jumlah Publikasi per Tahun',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { threshold: 0.7 });
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
